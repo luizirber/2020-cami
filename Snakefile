@@ -11,6 +11,7 @@ LCA_URLS = {
 rule all:
   input:
     "outputs/cami_i_low/opal_output/results.html",
+    "outputs/cami_i_low/opal_output_all/results.html",
     "outputs/cami_i_hc/opal_output/results.html"
 
 rule download_taxonomy:
@@ -128,14 +129,14 @@ rule run_opal_report:
     "outputs/{sample}/sourmash_bioboxes-latest/all_results.profile",
     gs = "data/gs_{sample}.profile",
   params:
-    outputdir = lambda w: f"outputs/{w.sample}_all",
+    outputdir = lambda w: f"outputs/{w.sample}/opal_output_all/",
   shell: """
     opal.py \
     --gold_standard_file $(pwd)/{input.gs} \
     --output_dir $(pwd)/{params.outputdir} \
     --plot_abundances \
     --desc='1st CAMI low' \
-    -l "sourmash, TIPP, Quikr, MP2.0, MetaPhyler, mOTU, CLARK, FOCUS"
+    -l "sourmash, TIPP, Quikr, MP2.0, MetaPhyler, mOTU, CLARK, FOCUS" \
     {input[0]} \
     data/opal/cranky_wozniak_13 \
     data/opal/grave_wright_13 \
