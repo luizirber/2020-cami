@@ -1,0 +1,10 @@
+name: opal
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.7.3
+  - snakemake-minimal
+  - cami-opal=1
+  - openjdk=11
