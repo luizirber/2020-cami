@@ -1,4 +1,6 @@
 import os
+from pathlib import PosixPath
+import urllib
 
 LCA_URLS = {                                                                                                                                                                                                                                             
   'genbank': {                                                                                                                                                                                                                                           
@@ -12,7 +14,8 @@ rule all:
   input:
     "outputs/cami_i_low/opal_output/results.html",
     "outputs/cami_i_low/opal_output_all/results.html",
-    "outputs/cami_i_hc/opal_output/results.html"
+    "outputs/cami_i_hc/opal_output/results.html",
+    "outputs/cami_ii_mg/opal_output/results.html"
 
 rule download_taxonomy:
   output: "inputs/taxdump_cami2_toy.tar.gz"
@@ -48,6 +51,39 @@ rule download_biobox_cami_ii_mg:
   output: "data/biobox_cami_ii_mg.yaml"
   shell: "wget -qO {output} https://github.com/CAMI-challenge/OPAL/raw/master/data/biobox_cami_ii_mg.yaml"
 
+rule download_cami_ii_mg_summary:
+  output: "data/summary_cami_ii_mg.tsv"
+  shell: "wget -qO {output} https://github.com/CAMI-challenge/data/raw/256460db625384a561aaf67ca168efd9ae070a52/CAMI2/toy/mouse_gut/taxonomic_profiling.tsv"
+
+rule download_cami_ii_mg_profiles:
+  output:
+    expand("data/cami_ii_mg_profiles/cami2_mouse_gut_{tool}.profile",
+           tool=("bracken2.5", "camiarkquikr1.0.0", "focus0.31", "metapalette1.0.0",
+                 "metaphlan2.2.0", "metaphlan2.9.21", "metaphyler1.25", "motus1.1",
+                 "motus2.5.1", "tipp2.0.0")
+    )
+  input: "data/summary_cami_ii_mg.tsv"
+  run:
+    import pandas as pd
+    dirpath = os.path.dirname(output[0])
+
+    t = pd.read_table(input[0])
+    for link in t['DirectLink']:
+      outfile = os.path.basename(urllib.parse.urlparse(link).path)
+      shell(f"wget -qO {dirpath}/{outfile} {link}")
+
+rule download_cami_ii_mg:
+  output: expand("inputs/cami_ii_mg/19122017_mousegut_scaffolds/2017.12.29_11.37.26_sample_{n}/reads/anonymous_reads.fq.gz", n=range(0,64))
+  input: "bin/camiClient.jar"
+  shell: """
+    mkdir -p inputs/cami_ii_mg && \
+    java -jar {input} \
+      -d https://openstack.cebitec.uni-bielefeld.de:8080/swift/v1/CAMISIM_MOUSEGUT \
+      inputs/cami_ii_mg \
+      -p 'mousegut_scaffolds.*anonymous_reads.fq.gz' \
+      -t 64
+  """
+
 rule download_gs_cami_i_hc:
   output: "data/gs_cami_i_hc.profile"
   shell: "wget -qO {output} https://github.com/CAMI-challenge/OPAL/raw/master/data/gs_cami_i_hc.profile"
@@ -63,7 +99,7 @@ rule download_cami_i_hc:
     output_dir = lambda w, output: os.path.dirname(output[0])
   shell: """
     mkdir -p {params.output_dir} && \
-    java -jar bin/camiClient.jar -d https://openstack.cebitec.uni-bielefeld.de:8080/swift/v1/CAMI_I_HIGH {params.output_dir}
+    java -jar bin/camiClient.jar -d https://openstack.cebitec.uni-bielefeld.de:8080/swift/v1/CAMI_I_HIGH {params.output_dir} -p fq.gz
   """
 
 rule download_gs_cami_i_low:
@@ -94,9 +130,17 @@ rule download_lca_database:
 def input_for_sample(w):
   if w.sample == "cami_i_low":
     return ["inputs/cami_i_low/RL_S001__insert_270.fq.gz"]
+  elif w.sample == "cami_ii_mg":
+    return expand("inputs/cami_ii_mg/19122017_mousegut_scaffolds/2017.12.29_11.37.26_sample_{n}/reads/anonymous_reads.fq.gz", n=range(0,64))
   else:
     # TODO: fix
     return []
+
+def datadir_for_sample(w, input):
+  if w.sample == "cami_ii_mg":
+    return os.path.join(*PosixPath(input.data[0]).parts[:3]),
+  else:
+    return os.path.join(*PosixPath(input.data[0]).parts[:2]),
 
 rule run_opal_workflow:
   output:
@@ -111,7 +155,7 @@ rule run_opal_workflow:
     acc2taxid_wgs = "db/nucl_wgs.accession2taxid.gz",
     taxonomy = "inputs/taxdump/names.dmp"
   params:
-    datadir = lambda w, input: os.path.dirname(input.data[0]),
+    datadir = datadir_for_sample,
     outputdir = lambda w: f"outputs/{w.sample}",
     dbdir = lambda w, input: os.path.dirname(input.db),
     taxdir = lambda w, input: os.path.dirname(input.taxonomy),
@@ -129,27 +173,49 @@ rule run_opal_workflow:
     --desc "{wildcards.sample}"
   """
 
+PROFILES = {
+  "cami_i_low": {
+    "data/opal/cranky_wozniak_13": "TIPP",
+    "data/opal/grave_wright_13": "Quikr",
+    "data/opal/furious_elion_13": "MP2.0",
+    "data/opal/focused_archimedes_13": "MetaPhyler",
+    "data/opal/evil_darwin_13": "mOTU",
+    "data/opal/agitated_blackwell_7": "CLARK",
+    "data/opal/jolly_pasteur_3": "FOCUS"
+  },
+  "cami_ii_mg": {
+    "data/cami_ii_mg_profiles/cami2_mouse_gut_bracken2.5.profile": "bracken2.5",
+    "data/cami_ii_mg_profiles/cami2_mouse_gut_camiarkquikr1.0.0.profile": "camiarkquikr1.0.0",
+    "data/cami_ii_mg_profiles/cami2_mouse_gut_focus0.31.profile": "focus0.31",
+    "data/cami_ii_mg_profiles/cami2_mouse_gut_metapalette1.0.0.profile": "metapalette1.0.0",
+    "data/cami_ii_mg_profiles/cami2_mouse_gut_metaphlan2.2.0.profile": "metaphlan2.2.0",
+    "data/cami_ii_mg_profiles/cami2_mouse_gut_metaphlan2.9.21.profile": "metaphlan2.9.21",
+    "data/cami_ii_mg_profiles/cami2_mouse_gut_metaphyler1.25.profile": "metaphyler1.25",
+    "data/cami_ii_mg_profiles/cami2_mouse_gut_motus1.1.profile": "motus1.1",
+    "data/cami_ii_mg_profiles/cami2_mouse_gut_motus2.5.1.profile": "motus2.5.1",
+    "data/cami_ii_mg_profiles/cami2_mouse_gut_tipp2.0.0.profile": "tipp2.0.0"
+  }
+}
+
+
 rule run_opal_report:
   output:
     "outputs/{sample}/opal_output_all/results.html",
   input:
     "outputs/{sample}/quay.io-luizirber-sourmash_biobox-latest/all_results.profile",
     gs = "data/gs_{sample}.profile",
+    profiles = lambda w: PROFILES[w.sample].keys()
   params:
     outputdir = lambda w: f"outputs/{w.sample}/opal_output_all/",
+    desc = "{sample}",
+    labels = lambda w, input: "sourmash, " + ", ".join(PROFILES[w.sample][path] for path in input.profiles)
   shell: """
     opal.py \
     --gold_standard_file $(pwd)/{input.gs} \
     --output_dir $(pwd)/{params.outputdir} \
     --plot_abundances \
-    --desc='1st CAMI low' \
-    -l "sourmash, TIPP, Quikr, MP2.0, MetaPhyler, mOTU, CLARK, FOCUS" \
+    --desc='{params.desc}' \
+    -l '{params.labels}' \
     {input[0]} \
-    data/opal/cranky_wozniak_13 \
-    data/opal/grave_wright_13 \
-    data/opal/furious_elion_13 \
-    data/opal/focused_archimedes_13 \
-    data/opal/evil_darwin_13 \
-    data/opal/agitated_blackwell_7 \
-    data/opal/jolly_pasteur_3
+    {input.profiles}
   """
