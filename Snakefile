@@ -1,14 +1,25 @@
+from glob import glob
 import os
 from pathlib import PosixPath
 import urllib
 
-LCA_URLS = {                                                                                                                                                                                                                                             
-  'genbank': {                                                                                                                                                                                                                                           
-    '21': 'https://osf.io/d7rv8/download',                                                                                                                                                                                                               
-    '31': 'https://osf.io/4f8n3/download',                                                                                                                                                                                                               
-    '51': 'https://osf.io/nemkw/download'                                                                                                                                                                                                                
-  }                                                                                                                                                                                                                                                      
-}  
+rule all:
+  input:
+    "outputs/cami_i_low/opal_output/results.html",
+    "outputs/cami_i_low/opal_output_all/results.html",
+    "outputs/cami_i_hc/opal_output/results.html",
+    "outputs/cami_ii_mg/opal_output/results.html",
+    "outputs/cami_ii_mg/opal_output_all/results.html",
+
+### Links for data
+
+LCA_URLS = {
+  'genbank': {
+    '21': 'https://osf.io/d7rv8/download',
+    '31': 'https://osf.io/4f8n3/download',
+    '51': 'https://osf.io/nemkw/download'
+  }
+}
 
 SBT_URLS = {
   'genbank': {
@@ -41,13 +52,6 @@ PROFILES = {
     "data/cami_ii_mg_profiles/cami2_mouse_gut_tipp2.0.0.profile": "tipp2.0.0"
   }
 }
-
-rule all:
-  input:
-    "outputs/cami_i_low/opal_output/results.html",
-    "outputs/cami_i_low/opal_output_all/results.html",
-    "outputs/cami_i_hc/opal_output/results.html",
-    "outputs/cami_ii_mg/opal_output/results.html"
 
 ### Download CAMI databases
 
@@ -185,9 +189,9 @@ rule download_cami_i_low:
 
 ### Download prepared sourmash databases
 
-rule download_lca_database:                                                                                                                                                                                                                              
-  output: "db/{db}-k{ksize}.lca.json.gz"                                                                                                                                                                                                         
-  params:                                                                                                                                                                                                                                                
+rule download_lca_database:
+  output: "db/{db}-k{ksize}.lca.json.gz"
+  params:
     url = lambda w: LCA_URLS[w.db][w.ksize]
   shell: "wget -qO {output[0]} {params.url}"
 
@@ -201,6 +205,41 @@ rule download_sbt_database:
   shell: """
     wget -qO {output.compressed} {params.url} && \
     cd db && tar xf {params.basename_compressed}
+  """
+
+### Prepare sourmash SBT using cami 2 refseq database
+
+rule sourmash_compute:
+  output: "inputs/refseq/sigs/{sequence}"
+  input: "inputs/refseq/sequences/{sequence}"
+  shell: """
+    sourmash compute -k 21,31,51 \
+                     --scaled 2000 \
+                     --track-abundance \
+                     --name-from-first \
+                     -o {output} \
+                     {input}
+  """
+
+def refseq_sigs(w):
+  return expand("inputs/refseq/sigs/{sequence}",
+                sequence=(os.path.basename(g) for g in glob("inputs/refseq/sequences/*.fna.gz")))
+
+rule sbt_index:
+  output: "outputs/sbt/refseq-k{ksize}.sbt.json"
+  input:
+    tar_file = "inputs/refseq/RefSeq_genomic_20190108.tar",
+    sigs = refseq_sigs
+  params:
+    sigs_dir = lambda w, input: os.path.dirname(input.sigs[0]),
+    ksize = lambda w: w.ksize,
+    bfsize = 500000
+  shell: """
+    sourmash index -k {params.ksize} \
+                   -d 2 \
+                   -x {params.bfsize} \
+                   --traverse-directory \
+                   {output} {params.sigs_dir}
   """
 
 ### Rules for opal workflow (calculating sourmash profiles)
