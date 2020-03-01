@@ -29,29 +29,58 @@ SBT_URLS = {
   }
 }
 
+
 PROFILES = {
+# Data from OPAL repo: convenient, but not official
   "cami_i_low": {
     "data/opal/cranky_wozniak_13": "TIPP",
-    "data/opal/grave_wright_13": "Quikr",
-    "data/opal/furious_elion_13": "MP2.0",
     "data/opal/focused_archimedes_13": "MetaPhyler",
     "data/opal/evil_darwin_13": "mOTU",
     "data/opal/agitated_blackwell_7": "CLARK",
-    "data/opal/jolly_pasteur_3": "FOCUS"
+    "data/opal/jolly_pasteur_3": "FOCUS",
+    "data/opal/grave_wright_13": "Quikr",
+    "data/opal/furious_elion_13": "MP2.0",
+    "data/metalign_profiles/metalign_default_cami1_low1.tsv": "Metalign",
   },
-  "cami_ii_mg": {
-    "data/cami_ii_mg_profiles/cami2_mouse_gut_bracken2.5.profile": "bracken2.5",
-    "data/cami_ii_mg_profiles/cami2_mouse_gut_camiarkquikr1.0.0.profile": "camiarkquikr1.0.0",
-    "data/cami_ii_mg_profiles/cami2_mouse_gut_focus0.31.profile": "focus0.31",
-    "data/cami_ii_mg_profiles/cami2_mouse_gut_metapalette1.0.0.profile": "metapalette1.0.0",
-    "data/cami_ii_mg_profiles/cami2_mouse_gut_metaphlan2.2.0.profile": "metaphlan2.2.0",
-    "data/cami_ii_mg_profiles/cami2_mouse_gut_metaphlan2.9.21.profile": "metaphlan2.9.21",
-    "data/cami_ii_mg_profiles/cami2_mouse_gut_metaphyler1.25.profile": "metaphyler1.25",
-    "data/cami_ii_mg_profiles/cami2_mouse_gut_motus1.1.profile": "motus1.1",
-    "data/cami_ii_mg_profiles/cami2_mouse_gut_motus2.5.1.profile": "motus2.5.1",
-    "data/cami_ii_mg_profiles/cami2_mouse_gut_tipp2.0.0.profile": "tipp2.0.0"
-  }
+  #'cami_i_low': {},
+  'cami_ii_mg': {},
 }
+
+# cami_ii_mg available profiles
+for tool in ("bracken2.5", "camiarkquikr1.0.0", "focus0.31", "metapalette1.0.0",
+             "metaphlan2.2.0", "metaphlan2.9.21", "metaphyler1.25", "motus1.1",
+             "motus2.5.1", "tipp2.0.0"):
+  path = f"data/cami_ii_mg_profiles/cami2_mouse_gut_{tool}.profile"
+  PROFILES['cami_ii_mg'][path] = tool
+
+# cami_i_low available profiles from official results
+
+CAMI_I_LOW_PROFILES = {
+  "CLARK_v1.1.3": "serene_almeida_reformatted",
+#  "Common_Kmers_": "RL_S001__insert_270.fq-QC-default.profile",
+#  "Common_Kmers_Sensitive_Unnormalized": "all.fq-QC-sensitive-unnormalized.profile",
+  "commonkmers_sjanssen": "result_3.profile",
+  "DUDes_": "RL_diginorm_0.1_k60-t1m0a0.000005-strain.out",
+#  "DUDes_old": "RL_diginorm_subset10M_k10_profile.out",
+#  "FOCUS_cfk7b": "cfk7b.out",
+#  "FOCUS_cfk7bd": "cfk7bd.out",
+#  "FOCUS_cfk7d": "cfk7d.out",
+#  "FOCUS_cfk8b": "cfk8b.out",
+#  "FOCUS_cfk8bd": "cfk8bd.out",
+#  "FOCUS_cfk8d": "cfk8d.out",
+  "FOCUS_sjanssen": "result_3.profile",
+  "MetaPhlAn2.0_db_v20": "result_3_pairedend.txt.profile",
+  "MetaPhyler_V1.25": "result_3.profile",
+  "mOTU_1.1.1": "result_3.profile",
+  "Quickr_sjanssen": "result_3.profile",
+#  "Taxy-Pro_": "cami_low 2.profile",
+  "Taxy-Pro_sjanssen": "result_3.profile",
+  "TIPP_1.1": "result_3.profile",
+}
+
+#for (tool, path) in CAMI_I_LOW_PROFILES.items():
+#  path = f"data/program_results/profiling/1st_CAMI_Challenge_Dataset_1_CAMI_low/Low/{tool}/{path}"
+#  PROFILES['cami_i_low'][path] = tool
 
 ### Download CAMI databases
 
@@ -62,6 +91,10 @@ rule download_camiClient:
 rule download_taxonomy:
   output: "inputs/taxdump_cami2_toy.tar.gz"
   shell: "wget -qO {output} https://openstack.cebitec.uni-bielefeld.de:8080/swift/v1/CAMI_DATABASES/taxdump_cami2_toy.tar.gz"
+
+rule download_taxonomy_cami_i:
+  output: "inputs/taxonomy_cami_i.tar.gz"
+  shell: "wget -qO {output} ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100344/databases.dir/taxonomy.tar.gz"
 
 rule extract_cami2_toy_taxonomy:
   output: expand("inputs/taxdump/{file}.dmp", file=('names', 'nodes'))
@@ -96,6 +129,13 @@ rule extract_cami2_taxonomy:
     cd inputs && tar xf {params.infile}
     cd ncbi_taxonomy && tar xf taxdump.tar.gz
   """
+
+### Metalign profiles
+
+# available precisions: default, sensitive, precise
+rule download_metalign_profiles:
+  output: "data/metalign_profiles/metalign_{precision}_cami1_low1.tsv"
+  shell: "wget -qO {output[0]} https://github.com/nlapier2/Metalign/raw/378262587455fd5899a1de25995e28b09bc8d03b/paper_data/raw_results/cami1/metalign_results/metalign_{wildcards.precision}_cami1_low1.tsv"
 
 ### Current acc-to-taxid mappings (genbank and wgs)
 
@@ -177,6 +217,20 @@ rule download_biobox_cami_i_low:
   # TODO: fix this
   shell: "wget -qO {output} https://github.com/CAMI-challenge/OPAL/raw/master/data/biobox_cami_i_hc.yaml"
 
+rule download_program_results_cami_i:
+  output: "data/program_results.tar.gz"
+  shell: "wget -qO {output} ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100344/program_results.tar.gz"
+
+#rule extract_program_results_cami_i:
+#  output: PROFILES['cami_i_low'].keys()
+#  input: "data/program_results.tar.gz"
+#  shell: """
+#    mkdir -p data
+#    cd data && tar xf ../{input} program_results/profiling
+#  """
+
+# TODO: fix sample names in cami_i_low profiles
+
 rule download_cami_i_low:
   output: "inputs/cami_i_low/RL_S001__insert_270.fq.gz"
   input: "bin/camiClient.jar"
@@ -210,7 +264,7 @@ rule download_sbt_database:
 ### Prepare sourmash SBT using cami 2 refseq database
 
 rule sourmash_compute:
-  output: "inputs/refseq/sigs/{sequence}"
+  output: "inputs/refseq/sigs/{sequence}.sig"
   input: "inputs/refseq/sequences/{sequence}"
   shell: """
     sourmash compute -k 21,31,51 \
@@ -222,7 +276,7 @@ rule sourmash_compute:
   """
 
 def refseq_sigs(w):
-  return expand("inputs/refseq/sigs/{sequence}",
+  return expand("inputs/refseq/sigs/{sequence}.sig",
                 sequence=(os.path.basename(g) for g in glob("inputs/refseq/sequences/*.fna.gz")))
 
 rule sbt_index:
@@ -262,7 +316,7 @@ def datadir_for_sample(w, input):
 rule run_opal_workflow:
   output:
     "outputs/{sample}/opal_output/results.html",
-    "outputs/{sample}/quay.io-luizirber-sourmash_biobox-latest/all_results.profile",
+    "outputs/{sample}/quay.io-sourmash.bio-sourmash-latest/all_results.profile",
   input:
     data = input_for_sample,
     biobox = "data/biobox_{sample}.yaml",
@@ -278,7 +332,7 @@ rule run_opal_workflow:
     taxdir = lambda w, input: os.path.dirname(input.taxonomy),
   shell: """
     opal_workflow.py \
-    quay.io/luizirber/sourmash_biobox:latest \
+    quay.io/sourmash.bio/sourmash:latest \
     --labels "sourmash" \
     --input_dir $(pwd)/{params.datadir} \
     --output_dir $(pwd)/{params.outputdir} \
@@ -296,13 +350,13 @@ rule run_opal_report:
   output:
     "outputs/{sample}/opal_output_all/results.html",
   input:
-    "outputs/{sample}/quay.io-luizirber-sourmash_biobox-latest/all_results.profile",
+    "outputs/{sample}/quay.io-sourmash.bio-sourmash-latest/all_results.profile",
     gs = "data/gs_{sample}.profile",
     profiles = lambda w: reversed(list(PROFILES[w.sample].keys()))
   params:
     outputdir = lambda w: f"outputs/{w.sample}/opal_output_all/",
     desc = "{sample}",
-    labels = lambda w, input: "sourmash, " + ", ".join(PROFILES[w.sample][path] for path in input.profiles)
+    labels = lambda w, input: "sourmash," + ",".join(PROFILES[w.sample][path] for path in input.profiles)
   shell: """
     opal.py \
     --gold_standard_file $(pwd)/{input.gs} \
