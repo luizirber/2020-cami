@@ -8,3 +8,4 @@ dependencies:
   - snakemake-minimal
   - cami-opal=1
   - openjdk=11
+  - sourmash=3.2.2
