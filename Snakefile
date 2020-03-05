@@ -7,7 +7,6 @@ rule all:
   input:
     "outputs/cami_i_low/opal_output/results.html",
     "outputs/cami_i_low/opal_output_all/results.html",
-    "outputs/cami_i_hc/opal_output/results.html",
     "outputs/cami_ii_mg/opal_output/results.html",
     "outputs/cami_ii_mg/opal_output_all/results.html",
 
@@ -28,7 +27,6 @@ SBT_URLS = {
     '51': 'https://osf.io/jznwe/download'
   }
 }
-
 
 PROFILES = {
   # Data from OPAL repo: convenient, but not official
@@ -165,6 +163,8 @@ rule download_wgs_acc2taxid:
 
 ### Download CAMI gold standards, other tools profiles and biobox definitions
 
+#### CAMI 2 data
+
 rule download_gs_cami_ii_mg:
   output: "data/gs_cami_ii_mg.profile"
   shell: "wget -qO {output} https://github.com/CAMI-challenge/OPAL/raw/master/data/gs_cami_ii_mg.profile"
@@ -206,6 +206,8 @@ rule download_cami_ii_mg:
       -t 64
   """
 
+### CAMI I data
+
 rule download_gs_cami_i_hc:
   output: "data/gs_cami_i_hc.profile"
   shell: "wget -qO {output} https://github.com/CAMI-challenge/OPAL/raw/master/data/gs_cami_i_hc.profile"
@@ -221,7 +223,19 @@ rule download_cami_i_hc:
     output_dir = lambda w, output: os.path.dirname(output[0])
   shell: """
     mkdir -p {params.output_dir} && \
-    java -jar bin/camiClient.jar -d https://openstack.cebitec.uni-bielefeld.de:8080/swift/v1/CAMI_I_HIGH {params.output_dir} -p fq.gz
+    java -jar bin/camiClient.jar -d https://openstack.cebitec.uni-bielefeld.de:8080/swift/v1/CAMI_I_HIGH {params.output_dir}
+  """
+
+rule download_cami_i_medium:
+  output:
+    expand("inputs/cami_i_medium/RM1_S00{n}__insert_5000.fq.gz", n=(1, 2)),
+    expand("inputs/cami_i_medium/RM2_S00{n}__insert_270.fq.gz", n=(1, 2)),
+  input: "bin/camiClient.jar"
+  params:
+    output_dir = lambda w, output: os.path.dirname(output[0])
+  shell: """
+    mkdir -p {params.output_dir} && \
+    java -jar bin/camiClient.jar -d https://openstack.cebitec.uni-bielefeld.de:8080/swift/v1/CAMI_I_MEDIUM {params.output_dir}
   """
 
 rule download_gs_cami_i_low:
@@ -255,12 +269,6 @@ rule download_cami_i_low:
   shell: """
     mkdir -p {params.output_dir} && \
     java -jar bin/camiClient.jar -d https://openstack.cebitec.uni-bielefeld.de:8080/swift/v1/CAMI_I_LOW {params.output_dir} -p fq.gz
-  """
-
-rule download_cami_i:
-  output: "inputs/cami_i_compressed/CAMI_{level}.tar"
-  shell: """
-    wget -qO {output} ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100344/ChallengeDatasets.dir/CAMI_{wildcards.level}.tar
   """
 
 ### Download prepared sourmash databases
@@ -375,7 +383,7 @@ rule lca_index:
       --split-identifiers
   """
 
-### Rules for opal workflow (calculating sourmash profiles)
+### Functions for opal rules
 
 def input_for_sample(w):
   if w.sample == "cami_i_low":
@@ -392,6 +400,41 @@ def datadir_for_sample(w, input):
   else:
     return os.path.join(*PosixPath(input.data[0]).parts[:2]),
 
+### snakemake rules to mirror opal workflow
+### This is needed because opal workflow runs everything serially,
+### and that takes too long...
+
+rule profile_for_challenge_sample:
+  output:
+    "outputs/{challenge}/profiles/{sample}",
+  input:
+    #data = input_for_sample,
+    biobox = "data/biobox_{challenge}.yaml",
+    #db = "db/genbank-k51.lca.json.gz",
+    #db = "outputs/sbt/refseq-k51.sbt.json",
+    db = "outputs/lca/refseq-k51-s10000.lca.json.gz",
+    acc2taxid_gb = "inputs/ncbi_taxonomy/accession2taxid/nucl_gb.accession2taxid.gz",
+    acc2taxid_wgs = "inputs/ncbi_taxonomy/accession2taxid/nucl_wgs.accession2taxid.gz",
+    taxonomy = "inputs/ncbi_taxonomy/names.dmp"
+  params:
+    datadir = datadir_for_sample,
+    outputdir = lambda w: f"outputs/{w.challenge}",
+    dbdir = lambda w, input: os.path.dirname(input.db),
+    taxdir = lambda w, input: os.path.dirname(input.taxonomy),
+  run:
+    ## TODO: make a new yaml just for the sample
+
+    shell(f"""opal_stats.py \
+      --input_dir $(pwd)/{params.datadir} \
+      --output_dir $(pwd)/{params.outputdir} \
+      --yaml $(pwd)/{input.biobox} \
+      --volume $(pwd)/{params.taxdir}:/biobox/share/taxonomy/:ro \
+      --volume $(pwd)/{params.dbdir}:/exchange/db:ro \
+      quay.io/sourmash.bio/sourmash:latest
+    """)
+
+### Rules for opal workflow (calculating sourmash profiles)
+
 rule run_opal_workflow:
   output:
     "outputs/{sample}/opal_output/results.html",
@@ -401,7 +444,7 @@ rule run_opal_workflow:
     biobox = "data/biobox_{sample}.yaml",
     gs = "data/gs_{sample}.profile",
     #db = "db/genbank-k51.lca.json.gz",
-    #db = "db/genbank-k51.lca.json.gz",
+    #db = "outputs/sbt/refseq-k51.sbt.json",
     db = "outputs/lca/refseq-k51-s10000.lca.json.gz",
     acc2taxid_gb = "inputs/ncbi_taxonomy/accession2taxid/nucl_gb.accession2taxid.gz",
     acc2taxid_wgs = "inputs/ncbi_taxonomy/accession2taxid/nucl_wgs.accession2taxid.gz",
