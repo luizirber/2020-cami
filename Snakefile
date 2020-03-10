@@ -31,25 +31,25 @@ SBT_URLS = {
 PROFILES = {
   # Data from OPAL repo: convenient, but not official
   "cami_i_low": {
-    "data/opal/cranky_wozniak_13": "TIPP",
+    "data/metalign_profiles/metalign_default_cami1_low1.tsv": "Metalign",
+    "data/opal/grave_wright_13": "Quikr",
     "data/opal/focused_archimedes_13": "MetaPhyler",
-    "data/opal/evil_darwin_13": "mOTU",
+    "data/opal/furious_elion_13": "MP2.0",
+    "data/opal/cranky_wozniak_13": "TIPP",
     "data/opal/agitated_blackwell_7": "CLARK",
     "data/opal/jolly_pasteur_3": "FOCUS",
-    "data/opal/grave_wright_13": "Quikr",
-    "data/opal/furious_elion_13": "MP2.0",
-    "data/metalign_profiles/metalign_sensitive_cami1_low1.tsv": "Metalign sensitive",
-    "data/metalign_profiles/metalign_precise_cami1_low1.tsv": "Metalign precise",
-    "data/metalign_profiles/metalign_default_cami1_low1.tsv": "Metalign",
+    "data/opal/evil_darwin_13": "mOTU",
+    #"data/metalign_profiles/metalign_sensitive_cami1_low1.tsv": "Metalign sensitive",
+    #"data/metalign_profiles/metalign_precise_cami1_low1.tsv": "Metalign precise",
   },
   #'cami_i_low': {},
   'cami_ii_mg': {},
 }
 
 # cami_ii_mg available profiles
-for tool in ("bracken2.5", "camiarkquikr1.0.0", "focus0.31", "metapalette1.0.0",
-             "metaphlan2.2.0", "metaphlan2.9.21", "metaphyler1.25", "motus1.1",
-             "motus2.5.1", "tipp2.0.0"):
+for tool in ("motus2.5.1", "metaphlan2.9.21", "metaphlan2.2.0", "metapalette1.0.0",
+             "motus1.1", "metaphyler1.25", "tipp2.0.0", "camiarkquikr1.0.0",
+             "focus0.31", "bracken2.5"):
   path = f"data/cami_ii_mg_profiles/cami2_mouse_gut_{tool}.profile"
   PROFILES['cami_ii_mg'][path] = tool
 
@@ -476,7 +476,7 @@ rule run_opal_report:
   input:
     "outputs/{sample}/quay.io-sourmash.bio-sourmash-latest/all_results.profile",
     gs = "data/gs_{sample}.profile",
-    profiles = lambda w: reversed(list(PROFILES[w.sample].keys()))
+    profiles = lambda w: list(PROFILES[w.sample].keys())
   params:
     outputdir = lambda w: f"outputs/{w.sample}/opal_output_all/",
     desc = "{sample}",
