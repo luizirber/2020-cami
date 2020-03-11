@@ -9,6 +9,7 @@ rule all:
     "outputs/cami_i_low/opal_output_all/results.html",
     "outputs/cami_ii_mg/opal_output/results.html",
     "outputs/cami_ii_mg/opal_output_all/results.html",
+    expand("outputs/lca/refseq-k{k}-s{scaled}.lca.json.gz", k=(21,31,51), scaled=(2000, 10000)),
 
 ### Links for data
 
