@@ -3,6 +3,8 @@ import os
 from pathlib import PosixPath
 import urllib
 
+include: 'rules/common.smk'
+
 rule all:
   input:
     "outputs/cami_i_low/opal_output/results.html",
@@ -15,7 +17,6 @@ rule all:
 ### Include external rules for index construction
 # Uncomment this for initial run and rebuilding indices,
 # keeping it separated to avoid taking too long to recompute snakemake DAG
-
 #include: "rules/build_indices.smk"
 
 ### Links for data
@@ -334,23 +335,6 @@ rule download_sbt_database:
     cd db && tar xf {params.basename_compressed}
   """
 
-### Functions for opal rules
-
-def input_for_sample(w):
-  if w.sample == "cami_i_low":
-    return ["inputs/cami_i_low/RL_S001__insert_270.fq.gz"]
-  elif w.sample == "cami_ii_mg":
-    return expand("inputs/cami_ii_mg/19122017_mousegut_scaffolds/2017.12.29_11.37.26_sample_{n}/reads/anonymous_reads.fq.gz", n=range(0,64))
-  else:
-    # TODO: fix
-    return []
-
-def datadir_for_sample(w, input):
-  if w.sample == "cami_ii_mg":
-    return os.path.join(*PosixPath(input.data[0]).parts[:3]),
-  else:
-    return os.path.join(*PosixPath(input.data[0]).parts[:2]),
-
 ### snakemake rules to mirror opal workflow
 ### This is needed because opal workflow runs everything serially,
 ### and that takes too long...
@@ -383,21 +367,6 @@ rule profile_for_challenge_sample:
       --volume $(pwd)/{params.dbdir}:/exchange/db:ro \
       quay.io/sourmash.bio/sourmash:latest
     """)
-
-### taxid for an index
-rule taxid4index:
-  output: "outputs/lca/taxid4index.csv",
-  input:
-    db = "outputs/lca/refseq-k51-s10000.lca.json.gz",
-    acc2taxid_gb = "inputs/ncbi_taxonomy/accession2taxid/nucl_gb.accession2taxid.gz",
-    acc2taxid_wgs = "inputs/ncbi_taxonomy/accession2taxid/nucl_wgs.accession2taxid.gz",
-  shell: """
-    python gather_to_opal.py taxid4index \
-        --acc2taxid {input.acc2taxid_wgs} \
-        --acc2taxid {input.acc2taxid_gb} \
-        --output {output} \
-        {input.db}
-  """
 
 ### Rules for opal workflow (calculating sourmash profiles)
 

@@ -1,3 +1,5 @@
+include: "common.smk"
+
 ### Prepare sourmash SBT using cami 2 refseq database
 
 rule sourmash_compute:
@@ -11,10 +13,6 @@ rule sourmash_compute:
                      -o {output} \
                      {input}
   """
-
-def refseq_sigs(w):
-  return expand("inputs/refseq/sigs/{sequence}.sig",
-                sequence=(os.path.basename(g) for g in glob("inputs/refseq/sequences/*.fna.gz")))
 
 rule sbt_index:
   output: "outputs/sbt/refseq-k{ksize}.sbt.json"
@@ -90,3 +88,17 @@ rule lca_index:
       --split-identifiers
   """
 
+### taxid for an index
+rule taxid4index:
+  output: "outputs/lca/taxid4index.csv",
+  input:
+    db = "outputs/lca/refseq-k51-s10000.lca.json.gz",
+    acc2taxid_gb = "inputs/ncbi_taxonomy/accession2taxid/nucl_gb.accession2taxid.gz",
+    acc2taxid_wgs = "inputs/ncbi_taxonomy/accession2taxid/nucl_wgs.accession2taxid.gz",
+  shell: """
+    python gather_to_opal.py taxid4index \
+        --acc2taxid {input.acc2taxid_wgs} \
+        --acc2taxid {input.acc2taxid_gb} \
+        --output {output} \
+        {input.db}
+  """
