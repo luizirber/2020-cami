@@ -9,7 +9,14 @@ rule all:
     "outputs/cami_i_low/opal_output_all/results.html",
     "outputs/cami_ii_mg/opal_output/results.html",
     "outputs/cami_ii_mg/opal_output_all/results.html",
-    expand("outputs/lca/refseq-k{k}-s{scaled}.lca.json.gz", k=(21,31,51), scaled=(2000, 10000)),
+    #expand("outputs/lca/refseq-k{k}-s{scaled}.lca.json.gz", k=(21,31,51), scaled=(2000, 10000)),
+
+
+### Include external rules for index construction
+# Uncomment this for initial run and rebuilding indices,
+# keeping it separated to avoid taking too long to recompute snakemake DAG
+
+#include: "rules/build_indices.smk"
 
 ### Links for data
 
@@ -47,10 +54,13 @@ PROFILES = {
   'cami_ii_mg': {},
 }
 
+# I ran metalign myself, NOT OFFICIAL
+PROFILES['cami_ii_mg']['data/metalign_profiles/metalign_default_cami_ii_mg.profile'] = "metalign"
+
 # cami_ii_mg available profiles
 for tool in ("motus2.5.1", "metaphlan2.9.21", "metaphlan2.2.0", "metapalette1.0.0",
-             "motus1.1", "metaphyler1.25", "tipp2.0.0", "camiarkquikr1.0.0",
-             "focus0.31", "bracken2.5"):
+             "motus1.1", "metaphyler1.25", "tipp2.0.0", "bracken2.5",
+             "camiarkquikr1.0.0", "focus0.31"):
   path = f"data/cami_ii_mg_profiles/cami2_mouse_gut_{tool}.profile"
   PROFILES['cami_ii_mg'][path] = tool
 
@@ -207,6 +217,38 @@ rule download_cami_ii_mg:
       -t 64
   """
 
+rule download_cami_ii_marine:
+  output:
+    expand("inputs/CAMI_2_MARINE/marmgCAMI2_{type}_read_sample_{n}_reads.fq.gz",
+        n=range(0,10),
+        type=("short", "long"))
+  input:
+    client = "bin/camiClient.jar",
+    linkfile = "data/marine.linkfile",
+  shell: """
+    mkdir -p inputs/CAMI_2_MARINE && \
+    java -jar {input} \
+      -d {input.linkfile} \
+      inputs/CAMI_2_MARINE \
+      -t 64
+  """
+
+rule download_cami_ii_strain:
+  output:
+    expand("inputs/CAMI_2_STRAIN/reads/strmgCAMI2_{type}_read_sample_{n}_reads.fq.gz",
+        n=range(0,100),
+        type=("short", "long"))
+  input:
+    client = "bin/camiClient.jar",
+    linkfile = "data/strain.linkfile",
+  shell: """
+    mkdir -p inputs/CAMI_2_STRAIN && \
+    java -jar {input} \
+      -d {input.linkfile} \
+      inputs/CAMI_2_STRAIN \
+      -t 64
+  """
+
 ### CAMI I data
 
 rule download_gs_cami_i_hc:
@@ -292,98 +334,6 @@ rule download_sbt_database:
     cd db && tar xf {params.basename_compressed}
   """
 
-### Prepare sourmash SBT using cami 2 refseq database
-
-rule sourmash_compute:
-  output: "inputs/refseq/sigs/{sequence}.sig"
-  input: "inputs/refseq/sequences/{sequence}"
-  shell: """
-    sourmash compute -k 21,31,51 \
-                     --scaled 2000 \
-                     --track-abundance \
-                     --name-from-first \
-                     -o {output} \
-                     {input}
-  """
-
-def refseq_sigs(w):
-  return expand("inputs/refseq/sigs/{sequence}.sig",
-                sequence=(os.path.basename(g) for g in glob("inputs/refseq/sequences/*.fna.gz")))
-
-rule sbt_index:
-  output: "outputs/sbt/refseq-k{ksize}.sbt.json"
-  input:
-    tar_file = "inputs/refseq/RefSeq_genomic_20190108.tar",
-    sigs = refseq_sigs
-  params:
-    sigs_dir = lambda w, input: os.path.dirname(input.sigs[0]),
-    ksize = lambda w: w.ksize,
-    bfsize = 500000
-  shell: """
-    sourmash index -k {params.ksize} \
-                   -d 2 \
-                   -x {params.bfsize} \
-                   --traverse-directory \
-                   {output} {params.sigs_dir}
-  """
-
-### Prepare sourmash LCA using the SBT
-
-rule download_lca_scripts:
-  output:
-    get_accession = "scripts/get-accessions-from-sbt.py",
-    make_acc_taxid_mapping = "scripts/make-acc-taxid-mapping.py",
-    make_lineage_csv = "scripts/make-lineage-csv.py",
-    taxdump_utils = "scripts/ncbi_taxdump_utils.py",
-  shell: """
-    wget -qO {output.get_accession} https://raw.githubusercontent.com/dib-lab/2018-ncbi-lineages/63e8dc784af092293362f2e8e671ae03d1a84d1d/get-accessions-from-sbt.py
-    chmod +x {output.get_accession}
-    wget -qO {output.make_acc_taxid_mapping} https://raw.githubusercontent.com/dib-lab/2018-ncbi-lineages/63e8dc784af092293362f2e8e671ae03d1a84d1d/make-acc-taxid-mapping.py
-    chmod +x {output.make_acc_taxid_mapping}
-    wget -qO {output.make_lineage_csv} https://raw.githubusercontent.com/dib-lab/2018-ncbi-lineages/63e8dc784af092293362f2e8e671ae03d1a84d1d/make-lineage-csv.py
-    chmod +x {output.make_lineage_csv}
-    wget -qO {output.taxdump_utils} https://raw.githubusercontent.com/dib-lab/2018-ncbi-lineages/63e8dc784af092293362f2e8e671ae03d1a84d1d/ncbi_taxdump_utils.py
-    chmod +x {output.taxdump_utils}
-  """
-
-rule lca_lineage_csv:
-  output: "outputs/lca/refseq_lineage.csv"
-  input:
-    sbt = "outputs/sbt/refseq-k51.sbt.json",
-    get_accession = "scripts/get-accessions-from-sbt.py",
-    make_acc_taxid_mapping = "scripts/make-acc-taxid-mapping.py",
-    make_lineage_csv = "scripts/make-lineage-csv.py",
-    acc2taxid_gb = "inputs/ncbi_taxonomy/accession2taxid/nucl_gb.accession2taxid.gz",
-    acc2taxid_wgs = "inputs/ncbi_taxonomy/accession2taxid/nucl_wgs.accession2taxid.gz",
-    taxonomy = expand("inputs/ncbi_taxonomy/{file}.dmp", file=('nodes', 'names')),
-  shell: """
-    {input.get_accession} {input.sbt} -o refseq.acc.txt
-    {input.make_acc_taxid_mapping} refseq.acc.txt {input.acc2taxid_gb} {input.acc2taxid_wgs}
-    {input.make_lineage_csv} {input.taxonomy} refseq.acc.txt.taxid -o {output}
-    rm refseq.acc.txt refseq.acc.txt.taxid
-  """
-
-rule lca_index:
-  output: "outputs/lca/refseq-k{ksize}-s{scaled}.lca.json.gz"
-  input:
-    sbt = "outputs/sbt/refseq-k{ksize}.sbt.json",
-    lineage_csv = "outputs/lca/refseq_lineage.csv",
-  params:
-    sigs_dir = "inputs/refseq/sigs",
-    ksize = "{ksize}",
-    scaled = "{scaled}",
-  shell: """
-    sourmash lca index \
-      {input.lineage_csv} \
-      {output} \
-      -k {params.ksize} \
-      --scaled={params.scaled} \
-      -C 3 \
-      -f \
-      --traverse-directory {params.sigs_dir} \
-      --split-identifiers
-  """
-
 ### Functions for opal rules
 
 def input_for_sample(w):
@@ -434,6 +384,21 @@ rule profile_for_challenge_sample:
       quay.io/sourmash.bio/sourmash:latest
     """)
 
+### taxid for an index
+rule taxid4index:
+  output: "outputs/lca/taxid4index.csv",
+  input:
+    db = "outputs/lca/refseq-k51-s10000.lca.json.gz",
+    acc2taxid_gb = "inputs/ncbi_taxonomy/accession2taxid/nucl_gb.accession2taxid.gz",
+    acc2taxid_wgs = "inputs/ncbi_taxonomy/accession2taxid/nucl_wgs.accession2taxid.gz",
+  shell: """
+    python gather_to_opal.py taxid4index \
+        --acc2taxid {input.acc2taxid_wgs} \
+        --acc2taxid {input.acc2taxid_gb} \
+        --output {output} \
+        {input.db}
+  """
+
 ### Rules for opal workflow (calculating sourmash profiles)
 
 rule run_opal_workflow:
@@ -449,7 +414,8 @@ rule run_opal_workflow:
     db = "outputs/lca/refseq-k51-s10000.lca.json.gz",
     acc2taxid_gb = "inputs/ncbi_taxonomy/accession2taxid/nucl_gb.accession2taxid.gz",
     acc2taxid_wgs = "inputs/ncbi_taxonomy/accession2taxid/nucl_wgs.accession2taxid.gz",
-    taxonomy = "inputs/ncbi_taxonomy/names.dmp"
+    taxid4index = "outputs/lca/taxid4index.csv",
+    taxonomy = "inputs/ncbi_taxonomy/names.dmp",
   params:
     datadir = datadir_for_sample,
     outputdir = lambda w: f"outputs/{w.sample}",

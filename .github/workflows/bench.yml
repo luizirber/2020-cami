@@ -18,7 +18,7 @@ jobs:
           environment-file: environment.yml
       - name: Run snakemake pipeline
         shell: bash -l {0}
-        run: snakemake --use-conda outputs/cami_i_low/opal_output_all/results.html outputs/cami_ii_mg/opal_output_all/results.html
+        run: snakemake -j4 --use-conda outputs/cami_i_low/opal_output_all/results.html outputs/cami_ii_mg/opal_output_all/results.html
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v2.10.1
         env:
