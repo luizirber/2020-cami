@@ -98,12 +98,12 @@ Gold standard	strain	L1 norm error	1	0.0
 Gold standard	na	Weighted UniFrac error	1	0.0
 Gold standard	na	Unweighted UniFrac error	1	0.0
 sourmash	superkingdom	Bray-Curtis distance	1	0.1817525731861687
-sourmash	phylum	Bray-Curtis distance	1	0.22781364224341819
-sourmash	class	Bray-Curtis distance	1	0.32025005436516624
-sourmash	order	Bray-Curtis distance	1	0.4592258050108678
-sourmash	family	Bray-Curtis distance	1	0.42968295161687764
-sourmash	genus	Bray-Curtis distance	1	0.33289175581479635
-sourmash	species	Bray-Curtis distance	1	0.7731416671876121
+sourmash	phylum	Bray-Curtis distance	1	0.22781364224341824
+sourmash	class	Bray-Curtis distance	1	0.3202500543651663
+sourmash	order	Bray-Curtis distance	1	0.4592258050108677
+sourmash	family	Bray-Curtis distance	1	0.42968295161687775
+sourmash	genus	Bray-Curtis distance	1	0.3328917558147963
+sourmash	species	Bray-Curtis distance	1	0.773141667187612
 sourmash	strain	Bray-Curtis distance	1	1.0
 sourmash	superkingdom	Shannon diversity	1	0.0
 sourmash	superkingdom	Shannon equitability	1	0.0
@@ -185,23 +185,23 @@ sourmash	strain	Completeness (recall)	1	0.0
 sourmash	strain	Jaccard index	1	0.0
 sourmash	strain	Taxon counts	1	14.0
 sourmash	superkingdom	L1 norm error	1	0.3635051463723374
-sourmash	phylum	L1 norm error	1	0.4556272844868364
+sourmash	phylum	L1 norm error	1	0.4556272844868366
 sourmash	class	L1 norm error	1	0.6405001087303325
-sourmash	order	L1 norm error	1	0.9184516100217356
-sourmash	family	L1 norm error	1	0.8593659032337553
-sourmash	genus	L1 norm error	1	0.6657835116295927
-sourmash	species	L1 norm error	1	1.546283334375225
+sourmash	order	L1 norm error	1	0.9184516100217353
+sourmash	family	L1 norm error	1	0.8593659032337555
+sourmash	genus	L1 norm error	1	0.6657835116295928
+sourmash	species	L1 norm error	1	1.546283334375224
 sourmash	strain	L1 norm error	1	2.0000000000000004
 sourmash	na	Weighted UniFrac error	1	8.852547449790942
 sourmash	na	Unweighted UniFrac error	1	521.0083414435151
 Metalign	superkingdom	Bray-Curtis distance	1	0.18165983502485594
-Metalign	phylum	Bray-Curtis distance	1	0.1566632501726194
-Metalign	class	Bray-Curtis distance	1	0.31318131525504694
-Metalign	order	Bray-Curtis distance	1	0.4454546220558942
-Metalign	family	Bray-Curtis distance	1	0.36019048027906975
-Metalign	genus	Bray-Curtis distance	1	0.28971272394025194
-Metalign	species	Bray-Curtis distance	1	0.7895363819451638
-Metalign	strain	Bray-Curtis distance	1	0.9203504778971325
+Metalign	phylum	Bray-Curtis distance	1	0.15666325017261942
+Metalign	class	Bray-Curtis distance	1	0.3131813152550469
+Metalign	order	Bray-Curtis distance	1	0.4454546220558941
+Metalign	family	Bray-Curtis distance	1	0.36019048027906964
+Metalign	genus	Bray-Curtis distance	1	0.2897127239402518
+Metalign	species	Bray-Curtis distance	1	0.789536381945164
+Metalign	strain	Bray-Curtis distance	1	0.9203504778971324
 Metalign	superkingdom	Shannon diversity	1	0.0009538754345180249
 Metalign	superkingdom	Shannon equitability	1	0.0013761513590049598
 Metalign	phylum	Shannon diversity	1	1.6511802326618825
@@ -287,16 +287,16 @@ Metalign	phylum	L1 norm error	1	0.3133265003452388
 Metalign	class	L1 norm error	1	0.6263626305100938
 Metalign	order	L1 norm error	1	0.8909092441117882
 Metalign	family	L1 norm error	1	0.7203809605581393
-Metalign	genus	L1 norm error	1	0.5794254478805037
+Metalign	genus	L1 norm error	1	0.5794254478805039
 Metalign	species	L1 norm error	1	1.5790727638903275
-Metalign	strain	L1 norm error	1	1.8407009557942646
-Metalign	na	Weighted UniFrac error	1	8.587752044834101
-Metalign	na	Unweighted UniFrac error	1	1056.0698170670935
+Metalign	strain	L1 norm error	1	1.8407009557942637
+Metalign	na	Weighted UniFrac error	1	8.587752044834097
+Metalign	na	Unweighted UniFrac error	1	1056.0698170670937
 Quikr	superkingdom	Bray-Curtis distance	1	0.1817525731861687
-Quikr	phylum	Bray-Curtis distance	1	0.2260579481424117
-Quikr	class	Bray-Curtis distance	1	0.33828148559538695
+Quikr	phylum	Bray-Curtis distance	1	0.22605794814241176
+Quikr	class	Bray-Curtis distance	1	0.3382814855953869
 Quikr	order	Bray-Curtis distance	1	0.4601773515496265
-Quikr	family	Bray-Curtis distance	1	0.7133027804022191
+Quikr	family	Bray-Curtis distance	1	0.7133027804022193
 Quikr	genus	Bray-Curtis distance	1	0.7742314921181931
 Quikr	species	Bray-Curtis distance	1	0.9079339586248221
 Quikr	superkingdom	Shannon diversity	1	0.21909661617540732
@@ -378,20 +378,20 @@ Quikr	strain	Jaccard index	1	0.0
 Quikr	strain	Taxon counts	1	0.0
 Quikr	superkingdom	L1 norm error	1	0.3635051463723374
 Quikr	phylum	L1 norm error	1	0.4521158962848235
-Quikr	class	L1 norm error	1	0.6765629711907737
-Quikr	order	L1 norm error	1	0.9203547030992528
-Quikr	family	L1 norm error	1	1.4266055608044388
+Quikr	class	L1 norm error	1	0.6765629711907738
+Quikr	order	L1 norm error	1	0.9203547030992527
+Quikr	family	L1 norm error	1	1.426605560804438
 Quikr	genus	L1 norm error	1	1.5484629842363866
-Quikr	species	L1 norm error	1	1.815867917249645
-Quikr	na	Weighted UniFrac error	1	9.890727222205925
-Quikr	na	Unweighted UniFrac error	1	8954.270681023794
+Quikr	species	L1 norm error	1	1.815867917249644
+Quikr	na	Weighted UniFrac error	1	9.890727222205918
+Quikr	na	Unweighted UniFrac error	1	8954.270681023798
 MetaPhyler	superkingdom	Bray-Curtis distance	1	0.18175257318616864
 MetaPhyler	phylum	Bray-Curtis distance	1	0.24732525027663033
-MetaPhyler	class	Bray-Curtis distance	1	0.3578802308907462
-MetaPhyler	order	Bray-Curtis distance	1	0.36161649141231134
-MetaPhyler	family	Bray-Curtis distance	1	0.4656293348726502
-MetaPhyler	genus	Bray-Curtis distance	1	0.8718578714041019
-MetaPhyler	species	Bray-Curtis distance	1	0.9673154732300081
+MetaPhyler	class	Bray-Curtis distance	1	0.3578802308907461
+MetaPhyler	order	Bray-Curtis distance	1	0.3616164914123113
+MetaPhyler	family	Bray-Curtis distance	1	0.4656293348726503
+MetaPhyler	genus	Bray-Curtis distance	1	0.8718578714041018
+MetaPhyler	species	Bray-Curtis distance	1	0.9673154732300082
 MetaPhyler	superkingdom	Shannon diversity	1	0.006114987155553601
 MetaPhyler	superkingdom	Shannon equitability	1	0.008822061644416889
 MetaPhyler	phylum	Shannon diversity	1	1.3620933789470324
@@ -470,20 +470,20 @@ MetaPhyler	strain	Completeness (recall)	1	0.0
 MetaPhyler	strain	Jaccard index	1	0.0
 MetaPhyler	strain	Taxon counts	1	0.0
 MetaPhyler	superkingdom	L1 norm error	1	0.3635051463723373
-MetaPhyler	phylum	L1 norm error	1	0.49465050055326065
-MetaPhyler	class	L1 norm error	1	0.7157604617814922
-MetaPhyler	order	L1 norm error	1	0.7232329828246223
+MetaPhyler	phylum	L1 norm error	1	0.4946505005532606
+MetaPhyler	class	L1 norm error	1	0.7157604617814924
+MetaPhyler	order	L1 norm error	1	0.7232329828246225
 MetaPhyler	family	L1 norm error	1	0.9312586697452997
-MetaPhyler	genus	L1 norm error	1	1.743715742808204
+MetaPhyler	genus	L1 norm error	1	1.743715742808203
 MetaPhyler	species	L1 norm error	1	1.9346309464600104
-MetaPhyler	na	Weighted UniFrac error	1	10.90555815005371
+MetaPhyler	na	Weighted UniFrac error	1	10.905558150053679
 MetaPhyler	na	Unweighted UniFrac error	1	12063.829811168427
 MP2.0	superkingdom	Bray-Curtis distance	1	0.1817525731861687
 MP2.0	phylum	Bray-Curtis distance	1	0.6774349912982913
-MP2.0	class	Bray-Curtis distance	1	0.7202028867762869
+MP2.0	class	Bray-Curtis distance	1	0.7202028867762867
 MP2.0	order	Bray-Curtis distance	1	0.7202021404899323
-MP2.0	family	Bray-Curtis distance	1	0.7798743585613366
-MP2.0	genus	Bray-Curtis distance	1	0.8292676292987402
+MP2.0	family	Bray-Curtis distance	1	0.7798743585613365
+MP2.0	genus	Bray-Curtis distance	1	0.82926762929874
 MP2.0	species	Bray-Curtis distance	1	0.9670466307313861
 MP2.0	strain	Bray-Curtis distance	1	1.0
 MP2.0	superkingdom	Shannon diversity	1	0.0
@@ -569,19 +569,19 @@ MP2.0	superkingdom	L1 norm error	1	0.3635051463723374
 MP2.0	phylum	L1 norm error	1	1.3548699825965826
 MP2.0	class	L1 norm error	1	1.4404057735525735
 MP2.0	order	L1 norm error	1	1.4404042809798643
-MP2.0	family	L1 norm error	1	1.5597487171226732
-MP2.0	genus	L1 norm error	1	1.6585352585974806
+MP2.0	family	L1 norm error	1	1.559748717122673
+MP2.0	genus	L1 norm error	1	1.658535258597481
 MP2.0	species	L1 norm error	1	1.9340932614627722
 MP2.0	strain	L1 norm error	1	2.0000000000000004
-MP2.0	na	Weighted UniFrac error	1	12.850184554915034
+MP2.0	na	Weighted UniFrac error	1	12.850184554915032
 MP2.0	na	Unweighted UniFrac error	1	773.200568181443
-TIPP	superkingdom	Bray-Curtis distance	1	0.1817525731861686
-TIPP	phylum	Bray-Curtis distance	1	0.39348120093061395
+TIPP	superkingdom	Bray-Curtis distance	1	0.18175257318616864
+TIPP	phylum	Bray-Curtis distance	1	0.3934812009306139
 TIPP	class	Bray-Curtis distance	1	0.4703643932828963
-TIPP	order	Bray-Curtis distance	1	0.47623648028557325
-TIPP	family	Bray-Curtis distance	1	0.5232786787671373
+TIPP	order	Bray-Curtis distance	1	0.47623648028557314
+TIPP	family	Bray-Curtis distance	1	0.5232786787671374
 TIPP	genus	Bray-Curtis distance	1	0.8800355527342208
-TIPP	species	Bray-Curtis distance	1	0.9673154732300082
+TIPP	species	Bray-Curtis distance	1	0.9673154732300081
 TIPP	superkingdom	Shannon diversity	1	0.020965325389330856
 TIPP	superkingdom	Shannon equitability	1	0.030246570969811103
 TIPP	phylum	Shannon diversity	1	1.256084489561436
@@ -660,20 +660,20 @@ TIPP	strain	Completeness (recall)	1	0.0
 TIPP	strain	Jaccard index	1	0.0
 TIPP	strain	Taxon counts	1	0.0
 TIPP	superkingdom	L1 norm error	1	0.3635051463723372
-TIPP	phylum	L1 norm error	1	0.7869624018612281
-TIPP	class	L1 norm error	1	0.9407287865657924
-TIPP	order	L1 norm error	1	0.9524729605711463
-TIPP	family	L1 norm error	1	1.0465573575342761
-TIPP	genus	L1 norm error	1	1.76007110546844
-TIPP	species	L1 norm error	1	1.9346309464600313
-TIPP	na	Weighted UniFrac error	1	11.443238652415241
+TIPP	phylum	L1 norm error	1	0.7869624018612279
+TIPP	class	L1 norm error	1	0.9407287865657925
+TIPP	order	L1 norm error	1	0.9524729605711464
+TIPP	family	L1 norm error	1	1.0465573575342777
+TIPP	genus	L1 norm error	1	1.7600711054684388
+TIPP	species	L1 norm error	1	1.9346309464600226
+TIPP	na	Weighted UniFrac error	1	11.443238652415296
 TIPP	na	Unweighted UniFrac error	1	6160.687593276241
-CLARK	superkingdom	Bray-Curtis distance	1	0.18160423806310513
-CLARK	phylum	Bray-Curtis distance	1	0.36229982090172985
-CLARK	class	Bray-Curtis distance	1	0.5913275882449124
-CLARK	order	Bray-Curtis distance	1	0.5927900101232179
-CLARK	family	Bray-Curtis distance	1	0.7865516955153078
-CLARK	genus	Bray-Curtis distance	1	0.8766082524184602
+CLARK	superkingdom	Bray-Curtis distance	1	0.18160423806310516
+CLARK	phylum	Bray-Curtis distance	1	0.3622998209017298
+CLARK	class	Bray-Curtis distance	1	0.5913275882449125
+CLARK	order	Bray-Curtis distance	1	0.5927900101232177
+CLARK	family	Bray-Curtis distance	1	0.7865516955153075
+CLARK	genus	Bray-Curtis distance	1	0.8766082524184599
 CLARK	superkingdom	Shannon diversity	1	0.009436470364435096
 CLARK	superkingdom	Shannon equitability	1	0.008589445486610472
 CLARK	phylum	Shannon diversity	1	1.1145337245204674
@@ -748,20 +748,20 @@ CLARK	strain	Purity (precision)	1	0.0
 CLARK	strain	Completeness (recall)	1	0.0
 CLARK	strain	Jaccard index	1	0.0
 CLARK	strain	Taxon counts	1	0.0
-CLARK	superkingdom	L1 norm error	1	0.3632084761262103
-CLARK	phylum	L1 norm error	1	0.7245996418034596
+CLARK	superkingdom	L1 norm error	1	0.3632084761262104
+CLARK	phylum	L1 norm error	1	0.7245996418034598
 CLARK	class	L1 norm error	1	1.182655176489825
-CLARK	order	L1 norm error	1	1.1855800202464355
-CLARK	family	L1 norm error	1	1.5731033910306167
-CLARK	genus	L1 norm error	1	1.7532165048369217
+CLARK	order	L1 norm error	1	1.185580020246435
+CLARK	family	L1 norm error	1	1.5731033910306165
+CLARK	genus	L1 norm error	1	1.7532165048369242
 CLARK	na	Weighted UniFrac error	1	10.190240322419516
-CLARK	na	Unweighted UniFrac error	1	9760.420685041061
+CLARK	na	Unweighted UniFrac error	1	9760.42068504106
 FOCUS	superkingdom	Bray-Curtis distance	1	0.18175257318616864
 FOCUS	phylum	Bray-Curtis distance	1	0.2636055140487024
 FOCUS	class	Bray-Curtis distance	1	0.5109462296307477
 FOCUS	order	Bray-Curtis distance	1	0.5569784399738614
-FOCUS	family	Bray-Curtis distance	1	0.761643208518824
-FOCUS	genus	Bray-Curtis distance	1	0.9011122716209193
+FOCUS	family	Bray-Curtis distance	1	0.7616432085188243
+FOCUS	genus	Bray-Curtis distance	1	0.9011122716209194
 FOCUS	species	Bray-Curtis distance	1	0.9684188476514367
 FOCUS	strain	Bray-Curtis distance	1	1.0
 FOCUS	superkingdom	Shannon diversity	1	0.14561541648255377
@@ -847,18 +847,18 @@ FOCUS	superkingdom	L1 norm error	1	0.3635051463723373
 FOCUS	phylum	L1 norm error	1	0.5272110280974048
 FOCUS	class	L1 norm error	1	1.0218924592614953
 FOCUS	order	L1 norm error	1	1.1139568799477226
-FOCUS	family	L1 norm error	1	1.5232864170376477
-FOCUS	genus	L1 norm error	1	1.8022245432418385
-FOCUS	species	L1 norm error	1	1.9368376953028734
-FOCUS	strain	L1 norm error	1	2.0000000000000013
-FOCUS	na	Weighted UniFrac error	1	11.773862323402474
-FOCUS	na	Unweighted UniFrac error	1	1641.5168530157653
+FOCUS	family	L1 norm error	1	1.5232864170376488
+FOCUS	genus	L1 norm error	1	1.8022245432418393
+FOCUS	species	L1 norm error	1	1.936837695302874
+FOCUS	strain	L1 norm error	1	2.0
+FOCUS	na	Weighted UniFrac error	1	11.773862323402481
+FOCUS	na	Unweighted UniFrac error	1	1641.5168530157655
 mOTU	superkingdom	Bray-Curtis distance	1	0.1817525731861687
 mOTU	phylum	Bray-Curtis distance	1	0.7453162681616803
-mOTU	class	Bray-Curtis distance	1	0.7874541656309907
+mOTU	class	Bray-Curtis distance	1	0.7874541656309906
 mOTU	order	Bray-Curtis distance	1	0.7914304452121708
-mOTU	family	Bray-Curtis distance	1	0.8297928990321685
-mOTU	genus	Bray-Curtis distance	1	0.8878289708507091
+mOTU	family	Bray-Curtis distance	1	0.8297928990321684
+mOTU	genus	Bray-Curtis distance	1	0.8878289708507093
 mOTU	species	Bray-Curtis distance	1	0.9673154732300082
 mOTU	superkingdom	Shannon diversity	1	0.0
 mOTU	superkingdom	Shannon equitability	1	0.0
@@ -941,8 +941,8 @@ mOTU	superkingdom	L1 norm error	1	0.3635051463723374
 mOTU	phylum	L1 norm error	1	1.4906325363233606
 mOTU	class	L1 norm error	1	1.574908331261981
 mOTU	order	L1 norm error	1	1.5828608904243413
-mOTU	family	L1 norm error	1	1.6595857980643367
+mOTU	family	L1 norm error	1	1.6595857980643358
 mOTU	genus	L1 norm error	1	1.775657941701418
-mOTU	species	L1 norm error	1	1.934630946460016
-mOTU	na	Weighted UniFrac error	1	13.154049107271463
+mOTU	species	L1 norm error	1	1.9346309464600149
+mOTU	na	Weighted UniFrac error	1	13.154049107271465
 mOTU	na	Unweighted UniFrac error	1	2469.0194102137866
