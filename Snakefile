@@ -4,6 +4,7 @@ from pathlib import PosixPath
 import urllib
 
 include: 'rules/common.smk'
+include: 'rules/rhizo.smk'
 
 rule all:
   input:

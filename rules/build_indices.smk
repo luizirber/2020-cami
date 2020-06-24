@@ -15,7 +15,7 @@ rule sourmash_compute:
   """
 
 rule sbt_index:
-  output: "outputs/sbt/refseq-k{ksize}.sbt.json"
+  output: "outputs/sbt/refseq-k{ksize}.sbt.zip"
   input:
     tar_file = "inputs/refseq/RefSeq_genomic_20190108.tar",
     sigs = refseq_sigs
@@ -53,7 +53,7 @@ rule download_lca_scripts:
 rule lca_lineage_csv:
   output: "outputs/lca/refseq_lineage.csv"
   input:
-    sbt = "outputs/sbt/refseq-k51.sbt.json",
+    sbt = "outputs/sbt/refseq-k51.sbt.zip",
     get_accession = "scripts/get-accessions-from-sbt.py",
     make_acc_taxid_mapping = "scripts/make-acc-taxid-mapping.py",
     make_lineage_csv = "scripts/make-lineage-csv.py",
@@ -70,7 +70,7 @@ rule lca_lineage_csv:
 rule lca_index:
   output: "outputs/lca/refseq-k{ksize}-s{scaled}.lca.json.gz"
   input:
-    sbt = "outputs/sbt/refseq-k{ksize}.sbt.json",
+    sbt = "outputs/sbt/refseq-k{ksize}.sbt.zip",
     lineage_csv = "outputs/lca/refseq_lineage.csv",
   params:
     sigs_dir = "inputs/refseq/sigs",
