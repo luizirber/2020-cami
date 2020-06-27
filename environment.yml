@@ -7,5 +7,5 @@ dependencies:
   - python=3.7.3
   - snakemake-minimal
   - cami-opal=1
-  - openjdk=11
+  - openjdk=8
   - sourmash=3.3.1

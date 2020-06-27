@@ -258,14 +258,14 @@ def summarize_all_levels(df, ranks):
 def gen_report(sample_id, ranks, taxons, *, taxonomy_id=None, program=None):
     output_lines = f"""# Taxonomic Profiling Output
 @SampleID:{sample_id}
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:{ranks}
 """.splitlines()
 
     if taxonomy_id is not None:
         output_lines.append(f"@TaxonomyID:{taxonomy_id}")
-    if program is not None:
-        output_lines.append(f"@__program__:{program}")
+#    if program is not None:
+#        output_lines.append(f"@__program__: {program}")
     output_lines.append(f"@@TAXID\tRANK\tTAXPATH\tPERCENTAGE")
 
     for tax in taxons.itertuples(index=False, name=None):

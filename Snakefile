@@ -133,6 +133,22 @@ rule download_cami2_taxonomy:
     wget -qO {output[0]} https://openstack.cebitec.uni-bielefeld.de:8080/swift/v1/CAMI_2_DATABASES/ncbi_taxonomy.tar
   """
 
+rule download_camiclient_taxonomy:
+  output: "inputs/taxdb.tar.gz"
+  shell: """
+    wget -qO {output[0]} https://openstack.cebitec.uni-bielefeld.de:8080/swift/v1/CAMI_DATABASES/taxdb.tar.gz
+  """
+
+rule extract_camiclient_taxonomy:
+  output: "inputs/taxdb/neostore"
+  input: "inputs/taxdb.tar.gz"
+  params:
+    infile = lambda w, input: os.path.basename(input[0])
+  shell: """
+    cd inputs && tar xf {params.infile}
+  """
+
+
 rule extract_cami2_taxonomy:
   output: expand("inputs/ncbi_taxonomy/{file}.dmp", file=('names', 'nodes'))
   input: "inputs/ncbi_taxonomy.tar"

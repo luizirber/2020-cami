@@ -3,11 +3,16 @@
 #  * generate profile for each gather run
 #  * concatenate profiles
 
+import tempfile
+
 rule all_cami2_rhimg:
   input:
-    expand('outputs/cami_ii_rhimg/results/{exp}-k{ksize}.profile',
+    expand('outputs/cami_ii_rhimg/results/{exp}-k{ksize}.profile.fingerprint',
            ksize = (21, 31, 51),
-           exp = ('short_read', 'long_read_nano', 'long_read_pacbio'))
+           exp = ('short_read', 'long_read_nano')),
+    expand('outputs/cami_ii_rhimg/results/{exp}-k{ksize}.profile.fingerprint',
+           ksize = (21, 31),
+           exp = ('long_read_pacbio'))
 
 rule compute_cami_sigs:
   output: 'outputs/cami_ii_rhimg/sigs/{exp}/{sample}.sig'
@@ -26,7 +31,7 @@ rule compute_cami_sigs:
 SCALED_FOR_EXP = {
   'short_read': 10000,
   'long_read_nano': 10000,
-  'long_read_pacbio': 10000,
+  'long_read_pacbio': 2000,
 }
 
 rule gather_cami_sample:
@@ -34,7 +39,6 @@ rule gather_cami_sample:
   input:
     sig = 'outputs/cami_ii_rhimg/sigs/{exp}/{sample}.sig',
     db = lambda w: 'outputs/lca/refseq-k{{ksize}}-s{scaled}.lca.json.gz'.format(scaled=SCALED_FOR_EXP[w.exp])
-  threads: 2
   params:
     scaled = lambda w: SCALED_FOR_EXP[w.exp],
     ksize = "{ksize}"
@@ -68,3 +72,19 @@ rule merge_profiles:
   shell: '''
     cat {input} > {output}
   '''
+
+rule fingerprint_profiles:
+  output: 'outputs/cami_ii_rhimg/results/{exp}-k{ksize}.profile.fingerprint'
+  input:
+    profile = 'outputs/cami_ii_rhimg/results/{exp}-k{ksize}.profile',
+    taxdb = "inputs/taxdb/neostore"
+  params:
+    taxdb = lambda w, input: os.path.dirname(input.taxdb)
+  run:
+    with tempfile.TemporaryDirectory() as tmpdir:
+        shell("""
+          cp -a {params.taxdb} {tmpdir}/
+          java -Xmx39g -jar bin/camiClient.jar -pf {input.profile} {tmpdir}/taxdb | \
+            grep 'Use this fingerprint' | \
+            cut -d':' -f2 > {output}
+        """)
