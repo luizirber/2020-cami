@@ -8,9 +8,9 @@ include: 'rules/rhizo.smk'
 
 rule all:
   input:
-    "outputs/cami_i_low/opal_output/results.html",
+    #"outputs/cami_i_low/opal_output/results.html",
     "outputs/cami_i_low/opal_output_all/results.html",
-    "outputs/cami_ii_mg/opal_output/results.html",
+    #"outputs/cami_ii_mg/opal_output/results.html",
     "outputs/cami_ii_mg/opal_output_all/results.html",
     #expand("outputs/lca/refseq-k{k}-s{scaled}.lca.json.gz", k=(21,31,51), scaled=(2000, 10000)),
 
@@ -342,7 +342,7 @@ rule download_lca_database:
 
 rule download_sbt_database:
   output:
-    db="db/{db}-d2-k{ksize}.sbt.json",
+    db="db/{db}-d2-k{ksize}.sbt.zip",
     compressed="db/{db}-k{ksize}.tar.gz"
   params:
     url = lambda w: SBT_URLS[w.db][w.ksize],
@@ -363,7 +363,7 @@ rule profile_for_challenge_sample:
     #data = input_for_sample,
     biobox = "data/biobox_{challenge}.yaml",
     #db = "db/genbank-k51.lca.json.gz",
-    #db = "outputs/sbt/refseq-k51.sbt.json",
+    #db = "outputs/sbt/refseq-k51.sbt.zip",
     db = "outputs/lca/refseq-k51-s10000.lca.json.gz",
     acc2taxid_gb = "inputs/ncbi_taxonomy/accession2taxid/nucl_gb.accession2taxid.gz",
     acc2taxid_wgs = "inputs/ncbi_taxonomy/accession2taxid/nucl_wgs.accession2taxid.gz",
@@ -389,14 +389,14 @@ rule profile_for_challenge_sample:
 
 rule run_opal_workflow:
   output:
-    "outputs/{sample}/opal_output/results.html",
+    #"outputs/{sample}/opal_output/results.html",
     "outputs/{sample}/quay.io-sourmash.bio-sourmash-latest/all_results.profile",
   input:
     data = input_for_sample,
     biobox = "data/biobox_{sample}.yaml",
     gs = "data/gs_{sample}.profile",
     #db = "db/genbank-k51.lca.json.gz",
-    #db = "outputs/sbt/refseq-k51.sbt.json",
+    #db = "outputs/sbt/refseq-k51.sbt.zip",
     db = "outputs/lca/refseq-k51-s10000.lca.json.gz",
     acc2taxid_gb = "inputs/ncbi_taxonomy/accession2taxid/nucl_gb.accession2taxid.gz",
     acc2taxid_wgs = "inputs/ncbi_taxonomy/accession2taxid/nucl_wgs.accession2taxid.gz",
@@ -438,9 +438,11 @@ rule run_opal_report:
     opal.py \
     --gold_standard_file $(pwd)/{input.gs} \
     --output_dir $(pwd)/{params.outputdir} \
-    --plot_abundances \
     --desc='{params.desc}' \
     -l '{params.labels}' \
+    --metrics_plot_rel c,p,l,w \
+    --metrics_plot_abs c,p \
+    --filter 1 \
     {input[0]} \
     {input.profiles}
   """

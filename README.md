@@ -29,6 +29,17 @@ and OPAL reports are published to github pages. Here are the links to access the
 [running with example data]: https://github.com/nlapier2/Metalign/wiki/Running-some-example-data/ae546a62dc7adf384d2a9cb848d0dd8772cd9d1c#instructions
 [data repository]: https://github.com/CAMI-challenge/data/blob/256460db625384a561aaf67ca168efd9ae070a52/CAMI2/toy/mouse_gut/taxonomic_profiling.tsv
 
+## Setup
+
+All processing and analysis scripts were performed using the conda environment specified in `environment.yml`.
+To build and activate this environment run:
+
+```bash
+conda env create --force --file environment.yml
+
+conda activate cami
+```
+
 ## Other similar CAMI evaluation repos
 
 These are other tools which participated in CAMI before and made their

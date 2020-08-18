@@ -1,4 +1,4 @@
-name: opal
+name: cami
 channels:
   - conda-forge
   - bioconda
@@ -6,6 +6,8 @@ channels:
 dependencies:
   - python=3.7.3
   - snakemake-minimal
-  - cami-opal=1
+  - cami-opal=1.0.8.post0
   - openjdk=8
   - sourmash=3.3.1
+  - pandas=1
+  - taxonomy=0.4
