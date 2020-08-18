@@ -1,8 +1,7 @@
 # Taxonomic Profiling Output
 @SampleID:0
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 10	genus	2|1224|1236|1706369|1706371|10	0.01803338135701195
 1000999	genus	2|57723|204432|204433|204434|1000999	0.0009800750737506492
@@ -2747,9 +2746,8 @@
 999628	strain	2|1224|28216|32003|2008793|378210|378211|999628	0.0009800750737506492
 # Taxonomic Profiling Output
 @SampleID:1
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 1003195	strain	2|201174|1760|85011|2062|1883|29303|1003195	0.002668677070059445
 1005944	species	2|201174|1760|85009|85015|1839|1005944	0.004892574628442315
@@ -4974,9 +4972,8 @@
 998084	species	2|201174|1760|85011|2062|1883|998084	0.00978514925688463
 # Taxonomic Profiling Output
 @SampleID:2
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 10	genus	2|1224|1236|1706369|1706371|10	0.03711539911955128
 100225	species	2|201174|1760|85006|85018|1184606|100225	0.0009923903507901412
@@ -7562,9 +7559,8 @@
 999628	strain	2|1224|28216|32003|2008793|378210|378211|999628	0.0011908684209481694
 # Taxonomic Profiling Output
 @SampleID:3
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 10	genus	2|1224|1236|1706369|1706371|10	0.03163846221449705
 1002367	strain	2|976|200643|171549|171552|838|363265|1002367	0.0009764957473610204
@@ -10201,9 +10197,8 @@
 998084	species	2|201174|1760|85011|2062|1883|998084	0.008593162576776977
 # Taxonomic Profiling Output
 @SampleID:4
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 10	genus	2|1224|1236|1706369|1706371|10	0.04155381746694678
 1002340	species	2|1224|28211|204455|31989|191028|1002340	0.001687464668708499
@@ -12815,9 +12810,8 @@
 999699	species	2|1224|28211|356|41294|1073|999699	0.0014765315851199366
 # Taxonomic Profiling Output
 @SampleID:5
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 10	genus	2|1224|1236|1706369|1706371|10	0.05246154587974348
 1001585	strain	2|1224|1236|72274|135621|286|300|1001585	0.0009643666522011669
@@ -15392,9 +15386,8 @@
 999386	strain	2|1224|28216|80840|80864|12916|758826|999386	0.0017358599739621004
 # Taxonomic Profiling Output
 @SampleID:6
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 1001585	strain	2|1224|1236|72274|135621|286|300|1001585	0.0009756421188605281
 100226	strain	2|201174|1760|85011|2062|1883|1902|100226	0.0011707705426326335
@@ -18028,9 +18021,8 @@
 999699	species	2|1224|28211|356|41294|1073|999699	0.0015610273901768448
 # Taxonomic Profiling Output
 @SampleID:7
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 1003195	strain	2|201174|1760|85011|2062|1883|29303|1003195	0.0017653981953707338
 1003237	strain	2|1224|28211|204441|41295|1543705|28077|1003237	0.0015692428403295412
@@ -20519,9 +20511,8 @@
 998084	species	2|201174|1760|85011|2062|1883|998084	0.0009807767752059633
 # Taxonomic Profiling Output
 @SampleID:8
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 1000999	genus	2|57723|204432|204433|204434|1000999	0.0009637049443845876
 1002368	strain	2|1224|1236|91347|543|158876|158877|1002368	0.0009637049443845876
@@ -23515,9 +23506,8 @@
 999546	strain	2|201174|1760|85008|28056|168694|168697|999546	0.002505632855399928
 # Taxonomic Profiling Output
 @SampleID:9
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 1001240	species	2|201174|1760|85006|85023|69578|1001240	0.0011560448622476211
 1003195	strain	2|201174|1760|85011|2062|1883|29303|1003195	0.0034681345867428625
@@ -26360,9 +26350,8 @@
 999541	strain	2|1224|28216|80840|119060|32008|28095|999541	0.005009527736406358
 # Taxonomic Profiling Output
 @SampleID:10
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 10	genus	2|1224|1236|1706369|1706371|10	0.0011549411268760574
 1001585	strain	2|1224|1236|72274|135621|286|300|1001585	0.0011549411268760574
@@ -29251,9 +29240,8 @@
 999628	strain	2|1224|28216|32003|2008793|378210|378211|999628	0.00153992150250141
 # Taxonomic Profiling Output
 @SampleID:11
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 1003195	strain	2|201174|1760|85011|2062|1883|29303|1003195	0.00536222846270868
 1005944	species	2|201174|1760|85009|85015|1839|1005944	0.002780414758441538
@@ -32060,9 +32048,8 @@
 995037	species	2|201174|1760|85006|85023|69578|995037	0.0015888084333951645
 # Taxonomic Profiling Output
 @SampleID:12
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 1001595	strain	2|203691|203692||170|171|28182|1001595	0.0011671335200746965
 100226	strain	2|201174|1760|85011|2062|1883|1902|100226	0.0009726112667289137
@@ -35094,9 +35081,8 @@
 996804	strain	2|203691|203692||170|171|28184|996804	0.0011671335200746965
 # Taxonomic Profiling Output
 @SampleID:13
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 1003110	species	2|201174|1760|85008|28056|84593|1003110	0.0024766103206067315
 1003195	strain	2|201174|1760|85011|2062|1883|29303|1003195	0.0017145763758046606
@@ -37804,9 +37790,8 @@
 999699	species	2|1224|28211|356|41294|1073|999699	0.004000678210210874
 # Taxonomic Profiling Output
 @SampleID:14
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 1000565	strain	2|1224|28216|32003|2008793|378210|378211|1000565	0.001578862192960643
 1000999	genus	2|57723|204432|204433|204434|1000999	0.0009867888706004018
@@ -41036,9 +41021,8 @@
 999699	species	2|1224|28211|356|41294|1073|999699	0.01085467757660442
 # Taxonomic Profiling Output
 @SampleID:15
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 1003195	strain	2|201174|1760|85011|2062|1883|29303|1003195	0.000994605261063989
 1005944	species	2|201174|1760|85009|85015|1839|1005944	0.0013924473654895843
@@ -43637,9 +43621,8 @@
 999541	strain	2|1224|28216|80840|119060|32008|28095|999541	0.007558999984086316
 # Taxonomic Profiling Output
 @SampleID:16
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 1002691	species	2|57723|204432|204433|204434|1742983|1002691	0.0010817905797676315
 1003110	species	2|201174|1760|85008|28056|84593|1003110	0.0019832827295739913
@@ -46624,9 +46607,8 @@
 999628	strain	2|1224|28216|32003|2008793|378210|378211|999628	0.0010817905797676315
 # Taxonomic Profiling Output
 @SampleID:17
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 1003195	strain	2|201174|1760|85011|2062|1883|29303|1003195	0.0023461190303490052
 1005395	strain	2|1224|1236|72274|135621|286|303|1005395	0.0011730595151745026
@@ -49263,9 +49245,8 @@
 999628	strain	2|1224|28216|32003|2008793|378210|378211|999628	0.0013685694343702527
 # Taxonomic Profiling Output
 @SampleID:18
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 1003195	strain	2|201174|1760|85011|2062|1883|29303|1003195	0.0015711783051699625
 1005048	strain	2|1224|28216|80840|75682|202907|158899|1005048	0.0013747810170237171
@@ -52078,9 +52059,8 @@
 999628	strain	2|1224|28216|32003|2008793|378210|378211|999628	0.0013747810170237171
 # Taxonomic Profiling Output
 @SampleID:19
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 100	species	2|1224|28211|356|335928|99|100	0.0014731352738032355
 1001585	strain	2|1224|1236|72274|135621|286|300|1001585	0.0033671663401216812
@@ -54732,9 +54712,8 @@
 999386	strain	2|1224|28216|80840|80864|12916|758826|999386	0.0067343326802433625
 # Taxonomic Profiling Output
 @SampleID:20
-@Version:0.10.0
+@Version:0.9.1
 @Ranks:superkingdom|phylum|class|order|family|genus|species|strain
-@__program__:sourmash gather
 @@TAXID	RANK	TAXPATH	PERCENTAGE
 1001585	strain	2|1224|1236|72274|135621|286|300|1001585	0.0022227071765152802
 1003110	species	2|201174|1760|85008|28056|84593|1003110	0.0024247714652893965
